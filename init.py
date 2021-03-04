@@ -10,9 +10,11 @@ config_dir = _curdir + "/config/"
 class Init(object):
     # uwsgi as static class variable, can be accessed by Init.uwsgi
     uwsgi = False
-    site_title = "CMSiMDE"
-    #ip = "127.0.0.1"
-    ip = "::"
+    site_title = "40823233 cd2021"
+    #自己可進用
+    ip = "127.0.0.1"
+    #使他人可進用
+    #ip = "::"
     port = 9443
     def __init__(self):
         # hope to create downloads and images directories　
