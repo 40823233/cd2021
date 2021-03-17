@@ -1,1 +1,86 @@
-<h1>About</h1><p>This is <a href="https://github.com/mdecourse/cmstemplate">https://github.com/mdecourse/cmstemplate</a></p><p>目前的 cmsimde 在編輯器下方新增一個 csave 按鈕, 意即 collabrative save, 當動態網際管理系統在多人同時維護登入維護網頁內容時, 編輯各頁面時段, 該頁面可能已經改版, 因此使用 csave 按鈕存檔時, 會導入當下最新的該頁面內容, 並試圖與編輯中的頁面內容進行合併.</p><p>使用 csave 按鈕存檔無法刪除頁面資料.</p><p>使用 Edit All 模式, 無法使用 csave 按鈕（尚未測試).</p><p></p><p></p>
+<h1>首頁</h1>
+<p>2021/3/17 第四周 更新</p>
+<p>最近的更新都主要在小組倉儲。</p>
+<p>本學期應做事項:</p>
+<p>分組:</p>
+<p>W2-W4 (3 Weeks): 二人一組</p>
+<p>W5-W9 (5 Weeks): 四人一組</p>
+<p>W10-W18 (9 Weeks): 八人一組</p>
+<h1>倉庫</h1>
+<p>原始網站刪除的東西還有部分筆記在此</p>
+<p><span>備註:記得前往github自己的帳戶中 seeting/gitgub page裡面將 Branch修改為 master</span></p>
+<p>此內容管理系統以 <a href="https://github.com/mdecourse/cmsimde">https://github.com/mdecourse/cmsimde</a> 作為 submodule 運作, 可以選定對應的版本運作, cmsimde 可以持續改版, 不會影響之前設為 submodule, 使用舊版 cmsimde 模組的內容管理相關運作.</p>
+<p>建立可快速給其他人上傳的倉儲方法:</p>
+<p>於init中之IP="***.***.***.***"改為IP="::"</p>
+<p>，並以ipconfig /all獲得IP即可使所有人進入<img alt="" src="https://40823233.github.io/cad2020/images/index.html"/></p>
+<h5><span>在網站上面放置可下載連結的方法</span></h5>
+<p><span>將檔案放進倉儲中，上傳後於倉儲找到檔案連結，右鍵點擊箭頭位置，按檢查獲得代碼，更改其網址，範例:<span><a href="https://github.com/40823233/cad2020/raw/master/download/40823233.ipt">https://github.com/40823233/cad2020/raw/master/download/40823233.ipt</a></span></span></p>
+<p><span><span><img alt="" height="250" src="https://40823233.github.io/cad2020/images/%E4%B8%8A%E5%82%B3%E7%AF%84%E4%BE%8B%20.png" width="806"/></span></span></p>
+<h4>倉儲複製(有子模組適用)</h4>
+<p><span>git clone --recurse-submodules<span> </span></span><span><span><a href="https://github.com/mdecourse/newcms.git">https://github.com/mdecourse/newcms.git</a><a href="https://github.com/mdecourse/newcms.git"></a></span></span></p>
+<p>這是還沒有設定使用者時的代碼。</p>
+<p><span>git clone --recurse-submodules<span> </span></span><span><span><a href="https://github.com/40823233/cp2019.git">https://github.com/40823233/cp2019.git</a><a href="https://github.com/mdecourse/newcms.git"></a></span></span></p>
+<p><span><span>這是我的倉儲的複製方法。</span></span></p>
+<p><span><span>若資料遺失 可</span></span><span><span>使用gitcheckout .回復到上一版倉儲</span></span></p>
+<h4>上傳三連</h4>
+<p>git add .</p>
+<p>git commit -m  "add repositere link"</p>
+<p>git push</p>
+<p>然後打帳號密碼，如果中途有錯的話cmd上面會告訴你叫你打一些東西，好了之後重複上述動作應該就行了。</p>
+<h4>利用 cmsimde 建立靜態網誌方法:</h4>
+<p>1. 在 github 建立倉儲, git clone 到近端</p>
+<p>2. 參考 <a href="https://github.com/mdecourse/newcms">https://github.com/mdecourse/newcms</a>, 加入除了 cmsimde 目錄外的所有內容</p>
+<p><span><span>以git子模塊添加 <span> </span></span></span><a href="https://github.com/mdecourse/cmsimde"><span><span>https://github.com/mdecourse/cmsimde</span></span></a><span><span><span> </span> cmsimde</span></span></p>
+<p>建立 cmsimde 目錄, 並從 github 取下子模組內容.</p>
+<p>3.在近端維護時, 更換目錄到倉儲中的 cmsimde, 以 python wsgi.py 啟動近端網際伺服器.</p>
+<p>動態內容編輯完成後, 以 generate_pages 轉為靜態內容, 以 git add commit 及 push 將內容推到遠端.</p>
+<p>4. 之後若要以 git clone 取下包含 submodule 的所有內容, 執行:</p>
+<p><span><span>git clone --recurse-submodules<span> </span></span></span><a href="https://github.com/mdecourse/newcms.git"><span><span>https://github.com/mdecourse/newcms.git</span></span></a></p>
+<p><a href="https://github.com/mdecourse/cmsimde">https://github.com/mdecourse/cmsimde</a> 的開發, 可以在一個目錄中放入 cmsimde, 然後將 up_dir 中的內容放到與 cmsimde 目錄同位階的地方, 使用 command 進入 cmsimde 目錄, 執行 python wsgi.py, 就可以啟動, 以瀏覽器 https://localhost:9443 就可以連接, 以 admin 作為管理者密碼, 就可以登入維護內容.</p>
+<p>cmsimde 的開發採用 Leo Editor, 開啟 cmsimde 目錄中的 cmsimde.leo 就可以進行程式修改, 結束後, 若要保留網際內容, 只要將 cmsimde 外部的內容倒回 up_dir 目錄中即可後續對 cmsimde 遠端倉儲進行改版.</p>
+<p>init.py 位於  up_dir 目錄, 可以設定 site_title 與 uwsgi 等變數.</p>
+<h4 id="-">數學符號與方程式</h4>
+<p>Inline math equations go in like so:<span><span> </span></span><span class="MathJax" data-mathml='&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;mi&gt;&amp;#x03C9;&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;&amp;#x03D5;&lt;/mi&gt;&lt;mrow class="MJX-TeXAtom-ORD"&gt;&lt;mo&gt;/&lt;/mo&gt;&lt;/mrow&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/math&gt;' id="MathJax-Element-1-Frame" role="presentation" style="box-sizing: border-box; display: inline; font: inherit; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; vertical-align: baseline; position: relative;" tabindex="0"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-1"><span><span><span class="mrow" id="MathJax-Span-2"><span class="mi" id="MathJax-Span-3">ω</span><span class="mo" id="MathJax-Span-4">=</span><span class="mi" id="MathJax-Span-5">d<span></span></span><span class="mi" id="MathJax-Span-6">ϕ</span><span class="texatom" id="MathJax-Span-7"><span class="mrow" id="MathJax-Span-8"><span class="mo" id="MathJax-Span-9">/</span></span></span><span class="mi" id="MathJax-Span-10">d<span></span></span><span class="mi" id="MathJax-Span-11">t</span></span><span></span></span></span><span></span></span></nobr><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>ω</mi><mo>=</mo><mi>d</mi><mi>ϕ</mi><mrow class="MJX-TeXAtom-ORD"><mo>/</mo></mrow><mi>d</mi><mi>t</mi></math></span></span>. Display math should get its own line and be put in in double-dollarsigns:</p>
+<div class="MathJax_Display"><span class="MathJax" data-mathml='&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;mi&gt;I&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mo&gt;&amp;#x222B;&lt;/mo&gt;&lt;mi&gt;&amp;#x03C1;&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;R&lt;/mi&gt;&lt;mrow class="MJX-TeXAtom-ORD"&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/mrow&gt;&lt;/msup&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;/math&gt;' id="MathJax-Element-2-Frame" role="presentation" style="box-sizing: border-box; display: inline; font: inherit; text-indent: 0px; text-align: center; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; vertical-align: baseline; position: relative;" tabindex="0"><nobr aria-hidden="true"><span class="math" id="MathJax-Span-12"><span><span><span class="mrow" id="MathJax-Span-13"><span class="mi" id="MathJax-Span-14">I<span></span></span><span class="mo" id="MathJax-Span-15">=</span><span class="mo" id="MathJax-Span-16">∫<span></span></span><span class="mi" id="MathJax-Span-17">ρ</span><span class="msubsup" id="MathJax-Span-18"><span><span><span class="mi" id="MathJax-Span-19">R</span><span></span></span><span><span class="texatom" id="MathJax-Span-20"><span class="mrow" id="MathJax-Span-21"><span class="mn" id="MathJax-Span-22">2</span></span></span><span></span></span></span></span><span class="mi" id="MathJax-Span-23">d<span></span></span><span class="mi" id="MathJax-Span-24">V</span></span></span></span></span></nobr></span></div>
+<div class="MathJax_Display"></div>
+<h4 class="MathJax_Display">於cad2020課程中所學到的軟體，程式:</h4>
+<div class="MathJax_Display">
+<div class="slides">
+<h4 class="stack present" data-previous-indexv="0">1.錄影,截圖,筆記:ShaerX,zoomit.</h4>
+<h4 class="stack present" data-previous-indexv="0">2.繪圖軟體:<span>NX, Solidworks, Inventor, Onshape, Solvespace</span></h4>
+<h4 class="stack present" data-previous-indexv="0"><span>3.github程式組成:</span></h4>
+<h4 class="stack present" data-previous-indexv="0"><span><img alt="" height="130" src="https://40823233.github.io/cad2020/images/Screenshot%202020-10-23%20150336.png" width="323"/></span></h4>
+<h4 class="stack present" data-previous-indexv="0"><span>2020cad:學習如何使用程式對各繪圖軟體繪出的圖進行大量複製並小幅度修改</span></h4>
+<h4 class="stack present" data-previous-indexv="0">利用MARKDOWN 寫投影片</h4>
+<h4 class="stack present" data-previous-indexv="0">以下利用 Markdown 格式展示 Python 程式碼:</h4>
+<pre><code class="hljs xl"># use threading <span class="hljs-built_in">and</span> subprocess to threading the make process
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> subprocess
+<span class="hljs-keyword">import</span> threading
+
+def domake():
+
+    <span class="hljs-built_in">path</span> = <span class="hljs-string">"../exposed/api/exposed"</span>
+    ubuntu = <span class="hljs-string">"../Ubuntu"</span>
+
+    # create obj <span class="hljs-built_in">path</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">not</span> os.<span class="hljs-built_in">path</span>.exists(<span class="hljs-built_in">path</span>+<span class="hljs-string">"/../obj"</span>):
+        os.makedirs(<span class="hljs-built_in">path</span>+<span class="hljs-string">"/../obj"</span>)
+
+    subprocess.call([<span class="hljs-string">"make"</span>, <span class="hljs-string">"clean"</span>], cwd=<span class="hljs-built_in">path</span>)
+    subprocess.call(<span class="hljs-string">"make"</span>, cwd=<span class="hljs-built_in">path</span>)
+    subprocess.call([<span class="hljs-string">"cp"</span>, <span class="hljs-string">"{libslvs.so, _slvs.so, slvs.py}"</span>, ubuntu], cwd=<span class="hljs-built_in">path</span>)
+    subprocess.call([<span class="hljs-string">"python3"</span>, <span class="hljs-string">"circle_ex.py"</span>], cwd=<span class="hljs-built_in">path</span>+<span class="hljs-string">"/"</span>+ubuntu)
+
+make = threading.Thread(target=domake)
+make.start()</code></pre>
+<h4 class="stack present" data-previous-indexv="0"><code class="hljs xl"><br/><span face="Lato"><span></span></span>使用 iframe 導入影片<br/><br/>導入影片 template<br/>導入結果如下<br/><br/></code></h4>
+<iframe allowfullscreen="allowfullscreen" data-mce-fragment="1" frameborder="0" height="492" mozallowfullscreen="mozallowfullscreen" src="https://player.vimeo.com/video/183950627" webkitallowfullscreen="webkitallowfullscreen" width="640"></iframe></div>
+</div>
+<p>This is <a href="https://github.com/mdecourse/cmstemplate">https://github.com/mdecourse/cmstemplate</a></p>
+<p>目前的 cmsimde 在編輯器下方新增一個 csave 按鈕, 意即 collabrative save, 當動態網際管理系統在多人同時維護登入維護網頁內容時, 編輯各頁面時段, 該頁面可能已經改版, 因此使用 csave 按鈕存檔時, 會導入當下最新的該頁面內容, 並試圖與編輯中的頁面內容進行合併.</p>
+<p>使用 csave 按鈕存檔無法刪除頁面資料.</p>
+<p>使用 Edit All 模式, 無法使用 csave 按鈕（尚未測試).</p>
+<p></p>
+<p></p>
