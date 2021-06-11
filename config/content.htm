@@ -147,6 +147,229 @@
 <p><a href="https://40423155.github.io/cd2021">40423155</a></p>
 <p><a href="https://40823227.github.io/cd2021">40823227</a></p>
 <p><a href="https://s40723233.github.io/cd2021">40723233</a></p>
+<h2>W13</h2>
+<p>機械手臂程式</p>
+<p>參考組長影片:<a href="https://40623144.github.io/cd2021/content/%E7%AC%AC%E5%8D%81%E4%B8%89%E9%80%B1.html">模擬影片</a></p>
+<div class="line number1 index0 alt2"><code class="py keyword">from</code> <code class="py plain">robolink </code><code class="py keyword">import</code> <code class="py keyword">*</code></div>
+<div class="line number2 index1 alt1"><code class="py keyword">from</code> <code class="py plain">robodk </code><code class="py keyword">import</code> <code class="py keyword">*</code></div>
+<div class="line number3 index2 alt2"> </div>
+<div class="line number4 index3 alt1"><code class="py keyword">import</code> <code class="py plain">os</code></div>
+<div class="line number5 index4 alt2"> </div>
+<div class="line number6 index5 alt1"><code class="py plain">dir_path </code><code class="py keyword">=</code> <code class="py plain">os.path.dirname(os.path.realpath(__file__))</code></div>
+<div class="line number7 index6 alt2"><code class="py functions">print</code><code class="py plain">(dir_path)</code></div>
+<div class="line number8 index7 alt1"><code class="py comments"># Calculate pyramid coordinate</code></div>
+<div class="line number9 index8 alt2"> </div>
+<div class="line number10 index9 alt1"><code class="py comments"># Setup global parameters</code></div>
+<div class="line number11 index10 alt2"><code class="py plain">BALL_DIAMETER </code><code class="py keyword">=</code> <code class="py value">100</code> <code class="py comments"># diameter of one ball</code></div>
+<div class="line number12 index11 alt1"><code class="py plain">APPROACH </code><code class="py keyword">=</code> <code class="py value">100</code> <code class="py comments"># approach distance to grab each part, in mm</code></div>
+<div class="line number13 index12 alt2"><code class="py plain">nTCPs </code><code class="py keyword">=</code> <code class="py value">6</code> <code class="py comments"># number of TCP's in the tool</code></div>
+<div class="line number14 index13 alt1"> </div>
+<div class="line number15 index14 alt2"><code class="py keyword">def</code> <code class="py plain">pyramid_calc(BALLS_SIDE</code><code class="py keyword">=</code><code class="py value">4</code><code class="py plain">):</code></div>
+<div class="line number16 index15 alt1"><code class="py comments">"""Calculate a list of points (ball center) as if the balls were place in a pyramid"""</code></div>
+<div class="line number17 index16 alt2"><code class="py comments">#the number of balls can be calculated as: int(BALLS_SIDE*(BALLS_SIDE+1)*(2*BALLS_SIDE+1)/6)</code></div>
+<div class="line number18 index17 alt1"><code class="py comments">#BALL_DIAMETER = 100</code></div>
+<div class="line number19 index18 alt2"><code class="py plain">xyz_list </code><code class="py keyword">=</code> <code class="py plain">[]</code></div>
+<div class="line number20 index19 alt1"><code class="py plain">sqrt2 </code><code class="py keyword">=</code> <code class="py value">2</code><code class="py keyword">*</code><code class="py keyword">*</code><code class="py plain">(</code><code class="py value">0.5</code><code class="py plain">)</code></div>
+<div class="line number21 index20 alt2"><code class="py keyword">for</code> <code class="py plain">h </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(BALLS_SIDE):</code></div>
+<div class="line number22 index21 alt1"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(BALLS_SIDE</code><code class="py keyword">-</code><code class="py plain">h):</code></div>
+<div class="line number23 index22 alt2"><code class="py keyword">for</code> <code class="py plain">j </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(BALLS_SIDE</code><code class="py keyword">-</code><code class="py plain">h):</code></div>
+<div class="line number24 index23 alt1"><code class="py plain">height </code><code class="py keyword">=</code> <code class="py plain">h</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER</code><code class="py keyword">/</code><code class="py plain">sqrt2 </code><code class="py keyword">+</code> <code class="py plain">BALL_DIAMETER</code><code class="py keyword">/</code><code class="py value">2</code></div>
+<div class="line number25 index24 alt2"><code class="py plain">xyz_list </code><code class="py keyword">=</code> <code class="py plain">xyz_list </code><code class="py keyword">+</code> <code class="py plain">[[i</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER </code><code class="py keyword">+</code> <code class="py plain">(h</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">)</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER</code><code class="py keyword">*</code><code class="py value">0.5</code><code class="py plain">, j</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER </code><code class="py keyword">+</code> <code class="py plain">(h</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">)</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER</code><code class="py keyword">*</code><code class="py value">0.5</code><code class="py plain">, height]]</code></div>
+<div class="line number26 index25 alt1"><code class="py keyword">return</code> <code class="py plain">xyz_list</code></div>
+<div class="line number27 index26 alt2"> </div>
+<div class="line number28 index27 alt1"><code class="py keyword">def</code> <code class="py plain">TCP_On(toolitem, tcp_id):</code></div>
+<div class="line number29 index28 alt2"><code class="py comments">"""Attach the closest object to the toolitem Htool pose,</code></div>
+<div class="line number30 index29 alt1"><code class="py comments">furthermore, it will output appropriate function calls on the generated robot program (call to TCP_On)"""</code></div>
+<div class="line number31 index30 alt2"><code class="py plain">toolitem.AttachClosest()</code></div>
+<div class="line number32 index31 alt1"><code class="py plain">toolitem.RDK().RunMessage(</code><code class="py string">'Set air valve %i on'</code> <code class="py keyword">%</code> <code class="py plain">(tcp_id</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">))</code></div>
+<div class="line number33 index32 alt2"><code class="py plain">toolitem.RDK().RunProgram(</code><code class="py string">'TCP_On(%i)'</code> <code class="py keyword">%</code> <code class="py plain">(tcp_id</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">));</code></div>
+<div class="line number34 index33 alt1"> </div>
+<div class="line number35 index34 alt2"><code class="py keyword">def</code> <code class="py plain">TCP_Off(toolitem, tcp_id, itemleave</code><code class="py keyword">=</code><code class="py value">0</code><code class="py plain">):</code></div>
+<div class="line number36 index35 alt1"><code class="py comments">"""Detaches the closest object attached to the toolitem Htool pose,</code></div>
+<div class="line number37 index36 alt2"><code class="py comments">furthermore, it will output appropriate function calls on the generated robot program (call to TCP_Off)"""</code></div>
+<div class="line number38 index37 alt1"><code class="py plain">toolitem.DetachAll(itemleave)</code></div>
+<div class="line number39 index38 alt2"><code class="py plain">toolitem.RDK().RunMessage(</code><code class="py string">'Set air valve %i off'</code> <code class="py keyword">%</code> <code class="py plain">(tcp_id</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">))</code></div>
+<div class="line number40 index39 alt1"><code class="py plain">toolitem.RDK().RunProgram(</code><code class="py string">'TCP_Off(%i)'</code> <code class="py keyword">%</code> <code class="py plain">(tcp_id</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">));</code></div>
+<div class="line number41 index40 alt2"> </div>
+<div class="line number42 index41 alt1"><code class="py comments"># Make a list of positions to place the objects</code></div>
+<div class="line number43 index42 alt2"><code class="py plain">balls_list </code><code class="py keyword">=</code> <code class="py plain">pyramid_calc(</code><code class="py value">4</code><code class="py plain">)</code></div>
+<div class="line number44 index43 alt1"> </div>
+<div class="line number45 index44 alt2"><code class="py comments">#print(len(frame1_list))</code></div>
+<div class="line number46 index45 alt1"><code class="py comments"># 4*4 = 16</code></div>
+<div class="line number47 index46 alt2"><code class="py comments"># 3*3 = 9</code></div>
+<div class="line number48 index47 alt1"><code class="py comments"># 2*2 = 4</code></div>
+<div class="line number49 index48 alt2"><code class="py comments"># 1+4+9+16 = 30</code></div>
+<div class="line number50 index49 alt1"> </div>
+<div class="line number51 index50 alt2"><code class="py comments"># height 50*sqrt(2)</code></div>
+<div class="line number52 index51 alt1"><code class="py comments">'''</code></div>
+<div class="line number53 index52 alt2"><code class="py comments">[</code></div>
+<div class="line number54 index53 alt1"> </div>
+<div class="line number55 index54 alt2"><code class="py comments">[50.0, 50.0, 50.0], [50.0, 150.0, 50.0], [50.0, 250.0, 50.0], [50.0, 350.0, 50.0],</code></div>
+<div class="line number56 index55 alt1"> </div>
+<div class="line number57 index56 alt2"><code class="py comments">[150.0, 50.0, 50.0], [150.0, 150.0, 50.0], [150.0, 250.0, 50.0], [150.0, 350.0, 50.0],</code></div>
+<div class="line number58 index57 alt1"> </div>
+<div class="line number59 index58 alt2"><code class="py comments">[250.0, 50.0, 50.0], [250.0, 150.0, 50.0], [250.0, 250.0, 50.0], [250.0, 350.0, 50.0],</code></div>
+<div class="line number60 index59 alt1"> </div>
+<div class="line number61 index60 alt2"><code class="py comments">[350.0, 50.0, 50.0], [350.0, 150.0, 50.0], [350.0, 250.0, 50.0], [350.0, 350.0, 50.0],</code></div>
+<div class="line number62 index61 alt1"> </div>
+<div class="line number63 index62 alt2"> </div>
+<div class="line number64 index63 alt1"><code class="py comments">[100.0, 100.0, 120.71067811865474], [100.0, 200.0, 120.71067811865474], [100.0, 300.0, 120.71067811865474],</code></div>
+<div class="line number65 index64 alt2"> </div>
+<div class="line number66 index65 alt1"><code class="py comments">[200.0, 100.0, 120.71067811865474], [200.0, 200.0, 120.71067811865474], [200.0, 300.0, 120.71067811865474],</code></div>
+<div class="line number67 index66 alt2"> </div>
+<div class="line number68 index67 alt1"><code class="py comments">[300.0, 100.0, 120.71067811865474], [300.0, 200.0, 120.71067811865474], [300.0, 300.0, 120.71067811865474],</code></div>
+<div class="line number69 index68 alt2"> </div>
+<div class="line number70 index69 alt1"> </div>
+<div class="line number71 index70 alt2"><code class="py comments">[150.0, 150.0, 191.42135623730948], [150.0, 250.0, 191.42135623730948],</code></div>
+<div class="line number72 index71 alt1"> </div>
+<div class="line number73 index72 alt2"><code class="py comments">[250.0, 150.0, 191.42135623730948], [250.0, 250.0, 191.42135623730948],</code></div>
+<div class="line number74 index73 alt1"> </div>
+<div class="line number75 index74 alt2"> </div>
+<div class="line number76 index75 alt1"><code class="py comments">[200.0, 200.0, 262.13203435596427]</code></div>
+<div class="line number77 index76 alt2"> </div>
+<div class="line number78 index77 alt1"><code class="py comments">]</code></div>
+<div class="line number79 index78 alt2"> </div>
+<div class="line number80 index79 alt1"><code class="py comments">'''</code></div>
+<div class="line number81 index80 alt2"><code class="py comments"># https://github.com/RoboDK/RoboDK-API/blob/master/Python/robolink.py</code></div>
+<div class="line number82 index81 alt1"><code class="py comments"># robodk_path variable to specify location of RoboDK.exe</code></div>
+<div class="line number83 index82 alt2"><code class="py comments"># under Ubuntu can not use "-NEWINSTANCE"</code></div>
+<div class="line number84 index83 alt1"><code class="py comments">'''</code></div>
+<div class="line number85 index84 alt2"><code class="py comments">start_robodk.sh content</code></div>
+<div class="line number86 index85 alt1"><code class="py comments">LD_LIBRARY_PATH="/home/yen/RoboDK/bin/lib"</code></div>
+<div class="line number87 index86 alt2"><code class="py comments">export LD_LIBRARY_PATH</code></div>
+<div class="line number88 index87 alt1"><code class="py comments">/home/yen/RoboDK/bin/RoboDK</code></div>
+<div class="line number89 index88 alt2"><code class="py comments">'''</code></div>
+<div class="line number90 index89 alt1"><code class="py plain">RDK </code><code class="py keyword">=</code> <code class="py plain">Robolink(robodk_path</code><code class="py keyword">=</code><code class="py plain">r</code><code class="py string">"Y:\robodk522_portable\bin\RoboDK.exe"</code><code class="py plain">,args</code><code class="py keyword">=</code><code class="py plain">[</code><code class="py string">"-SKIPINI"</code><code class="py plain">, </code><code class="py string">"-EXIT_LAST_COM"</code><code class="py plain">])</code></div>
+<div class="line number91 index90 alt2"><code class="py comments"># Add robot and the accompanied Base coordinate</code></div>
+<div class="line number92 index91 alt1"><code class="py functions">print</code><code class="py plain">(dir_path </code><code class="py keyword">+</code> <code class="py string">'/Fanuc-M-710iC-50.robot'</code><code class="py plain">)</code></div>
+<div class="line number93 index92 alt2"><code class="py comments"># relative directory or absolute directory will work for AddFile under Ubuntu</code></div>
+<div class="line number94 index93 alt1"><code class="py comments">#robot = RDK.AddFile(r"/home/yen/github/wcm2021/downloads/robodk/pick_and_place_kmol_mac/Fanuc-M-710iC-50.robot")</code></div>
+<div class="line number95 index94 alt2"><code class="py plain">robot </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFile(</code><code class="py string">'Fanuc-M-710iC-50.robot'</code><code class="py plain">)</code></div>
+<div class="line number96 index95 alt1"><code class="py comments"># Get the default robot base frame</code></div>
+<div class="line number97 index96 alt2"><code class="py plain">robot_frame </code><code class="py keyword">=</code> <code class="py plain">RDK.Item(</code><code class="py string">'Fanuc M-710iC/50 Base'</code><code class="py plain">)</code></div>
+<div class="line number98 index97 alt1"><code class="py comments"># Move the base frame to the origin</code></div>
+<div class="line number99 index98 alt2"><code class="py plain">robot_frame.setPose(transl(</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">))</code></div>
+<div class="line number100 index99 alt1"> </div>
+<div class="line number101 index100 alt2"><code class="py comments"># Add a tool to an existing robot:</code></div>
+<div class="line number102 index101 alt1"><code class="py plain">tool </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFile(dir_path </code><code class="py keyword">+</code> <code class="py string">'/MainTool.tool'</code><code class="py plain">, robot)</code></div>
+<div class="line number103 index102 alt2"> </div>
+<div class="line number104 index103 alt1"><code class="py comments"># Add table 1</code></div>
+<div class="line number105 index104 alt2"><code class="py plain">table1_frame </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFrame(</code><code class="py string">'Table 1'</code><code class="py plain">)</code></div>
+<div class="line number106 index105 alt1"><code class="py plain">table1_frame.setPose(transl(</code><code class="py value">807.766544</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py value">963.699898</code><code class="py plain">,</code><code class="py value">41.478944</code><code class="py plain">))</code></div>
+<div class="line number107 index106 alt2"><code class="py plain">table1_stl </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFile(dir_path </code><code class="py keyword">+</code> <code class="py string">'/Table.stl'</code><code class="py plain">, table1_frame)</code></div>
+<div class="line number108 index107 alt1"> </div>
+<div class="line number109 index108 alt2"><code class="py comments"># Add table 2</code></div>
+<div class="line number110 index109 alt1"><code class="py plain">table2_frame </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFrame(</code><code class="py string">'Table 2'</code><code class="py plain">)</code></div>
+<div class="line number111 index110 alt2"><code class="py plain">table2_frame.setPose(transl(</code><code class="py value">926.465508</code><code class="py plain">,</code><code class="py value">337.151529</code><code class="py plain">,</code><code class="py value">94.871928</code><code class="py plain">))</code></div>
+<div class="line number112 index111 alt1"><code class="py plain">table2_stl </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFile(dir_path </code><code class="py keyword">+</code> <code class="py string">'/Table.stl'</code><code class="py plain">, table2_frame)</code></div>
+<div class="line number113 index112 alt2"> </div>
+<div class="line number114 index113 alt1"><code class="py comments"># Calculate tool frames for the suction cup tool of 6 suction cups</code></div>
+<div class="line number115 index114 alt2"><code class="py plain">TCP_list </code><code class="py keyword">=</code> <code class="py plain">[]</code></div>
+<div class="line number116 index115 alt1"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(nTCPs):</code></div>
+<div class="line number117 index116 alt2"><code class="py plain">TCPi_pose </code><code class="py keyword">=</code> <code class="py plain">transl(</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">100</code><code class="py plain">)</code><code class="py keyword">*</code><code class="py plain">rotz((</code><code class="py value">360</code><code class="py keyword">/</code><code class="py plain">nTCPs)</code><code class="py keyword">*</code><code class="py plain">i</code><code class="py keyword">*</code><code class="py plain">pi</code><code class="py keyword">/</code><code class="py value">180</code><code class="py plain">)</code><code class="py keyword">*</code><code class="py plain">transl(</code><code class="py value">125</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">)</code><code class="py keyword">*</code><code class="py plain">roty(pi</code><code class="py keyword">/</code><code class="py value">2</code><code class="py plain">)</code></div>
+<div class="line number118 index117 alt1"><code class="py plain">TCPi </code><code class="py keyword">=</code> <code class="py plain">robot.AddTool(TCPi_pose, </code><code class="py string">'TCP %i'</code> <code class="py keyword">%</code> <code class="py plain">(i</code><code class="py keyword">+</code><code class="py value">1</code><code class="py plain">))</code></div>
+<div class="line number119 index118 alt2"><code class="py plain">TCP_list.append(TCPi)</code></div>
+<div class="line number120 index119 alt1"> </div>
+<div class="line number121 index120 alt2"><code class="py plain">TCP_0 </code><code class="py keyword">=</code> <code class="py plain">TCP_list[</code><code class="py value">0</code><code class="py plain">]</code></div>
+<div class="line number122 index121 alt1"> </div>
+<div class="line number123 index122 alt2"><code class="py comments"># Turn on automatic rendering</code></div>
+<div class="line number124 index123 alt1"><code class="py plain">RDK.Render(</code><code class="py color1">True</code><code class="py plain">)</code></div>
+<div class="line number125 index124 alt2"> </div>
+<div class="line number126 index125 alt1"><code class="py comments"># Add balls</code></div>
+<div class="line number127 index126 alt2"><code class="py comments"># create a list with 30 elements</code></div>
+<div class="line number128 index127 alt1"><code class="py plain">balls </code><code class="py keyword">=</code> <code class="py plain">[</code><code class="py color1">None</code> <code class="py keyword">for</code> <code class="py plain">_ </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(</code><code class="py value">30</code><code class="py plain">)]</code></div>
+<div class="line number129 index128 alt2"><code class="py plain">layer </code><code class="py keyword">=</code> <code class="py plain">[</code><code class="py value">16</code><code class="py plain">, </code><code class="py value">9</code><code class="py plain">, </code><code class="py value">4</code><code class="py plain">, </code><code class="py value">1</code><code class="py plain">]</code></div>
+<div class="line number130 index129 alt1"><code class="py plain">count </code><code class="py keyword">=</code> <code class="py value">0</code></div>
+<div class="line number131 index130 alt2"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(</code><code class="py functions">len</code><code class="py plain">(balls_list)):</code></div>
+<div class="line number132 index131 alt1"><code class="py comments"># transl(balls_list)</code></div>
+<div class="line number133 index132 alt2"><code class="py plain">balls[i] </code><code class="py keyword">=</code> <code class="py plain">RDK.AddFile(</code><code class="py string">'./ball.stl'</code><code class="py plain">, table1_frame)</code></div>
+<div class="line number134 index133 alt1"><code class="py plain">balls[i].setPose(transl(balls_list[i]))</code></div>
+<div class="line number135 index134 alt2"><code class="py plain">count </code><code class="py keyword">=</code> <code class="py plain">count </code><code class="py keyword">+</code> <code class="py value">1</code></div>
+<div class="line number136 index135 alt1"><code class="py keyword">if</code> <code class="py plain">count &lt;</code><code class="py keyword">=</code> <code class="py value">16</code><code class="py plain">:</code></div>
+<div class="line number137 index136 alt2"><code class="py plain">balls[i].setColor([</code><code class="py value">1</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">])</code></div>
+<div class="line number138 index137 alt1"><code class="py keyword">elif</code> <code class="py plain">count &gt; </code><code class="py value">16</code> <code class="py keyword">and</code> <code class="py plain">count &lt;</code><code class="py keyword">=</code> <code class="py value">25</code><code class="py plain">:</code></div>
+<div class="line number139 index138 alt2"><code class="py plain">balls[i].setColor([</code><code class="py value">0</code><code class="py plain">, </code><code class="py value">1</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">])</code></div>
+<div class="line number140 index139 alt1"><code class="py keyword">elif</code> <code class="py plain">count &gt; </code><code class="py value">25</code> <code class="py keyword">and</code> <code class="py plain">count &lt;</code><code class="py keyword">=</code><code class="py value">29</code><code class="py plain">:</code></div>
+<div class="line number141 index140 alt2"><code class="py plain">balls[i].setColor([</code><code class="py value">1</code><code class="py plain">, </code><code class="py value">1</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">])</code></div>
+<div class="line number142 index141 alt1"><code class="py keyword">else</code><code class="py plain">:</code></div>
+<div class="line number143 index142 alt2"><code class="py plain">balls[i].setColor([</code><code class="py value">0</code><code class="py plain">, </code><code class="py value">0</code><code class="py plain">, </code><code class="py value">1</code><code class="py plain">])</code></div>
+<div class="line number144 index143 alt1"> </div>
+<div class="line number145 index144 alt2"><code class="py comments"># Make a list of positions to place the objects</code></div>
+<div class="line number146 index145 alt1"><code class="py comments"># ball_list is the same as frame1_list</code></div>
+<div class="line number147 index146 alt2"><code class="py plain">frame1_list </code><code class="py keyword">=</code> <code class="py plain">pyramid_calc(</code><code class="py value">4</code><code class="py plain">)</code></div>
+<div class="line number148 index147 alt1"><code class="py plain">frame2_list </code><code class="py keyword">=</code> <code class="py plain">pyramid_calc(</code><code class="py value">4</code><code class="py plain">)</code></div>
+<div class="line number149 index148 alt2"> </div>
+<div class="line number150 index149 alt1"><code class="py comments"># Move balls</code></div>
+<div class="line number151 index150 alt2"><code class="py plain">robot.setPoseTool(TCP_list[</code><code class="py value">0</code><code class="py plain">])</code></div>
+<div class="line number152 index151 alt1"><code class="py plain">nballs_frame1 </code><code class="py keyword">=</code> <code class="py functions">len</code><code class="py plain">(frame1_list)</code></div>
+<div class="line number153 index152 alt2"><code class="py plain">nballs_frame2 </code><code class="py keyword">=</code> <code class="py functions">len</code><code class="py plain">(frame2_list)</code></div>
+<div class="line number154 index153 alt1"><code class="py plain">idTake </code><code class="py keyword">=</code> <code class="py plain">nballs_frame1 </code><code class="py keyword">-</code> <code class="py value">1</code></div>
+<div class="line number155 index154 alt2"><code class="py plain">idLeave </code><code class="py keyword">=</code> <code class="py value">0</code></div>
+<div class="line number156 index155 alt1"><code class="py plain">idTCP </code><code class="py keyword">=</code> <code class="py value">0</code></div>
+<div class="line number157 index156 alt2"> </div>
+<div class="line number158 index157 alt1"><code class="py plain">target_app_frame </code><code class="py keyword">=</code> <code class="py plain">transl(</code><code class="py value">2</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER, </code><code class="py value">2</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER, </code><code class="py value">4</code><code class="py keyword">*</code><code class="py plain">BALL_DIAMETER)</code><code class="py keyword">*</code><code class="py plain">roty(pi)</code><code class="py keyword">*</code><code class="py plain">transl(</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py plain">APPROACH)</code></div>
+<div class="line number159 index158 alt2"> </div>
+<div class="line number160 index159 alt1"><code class="py comments"># frame1 is the same as table1_frame</code></div>
+<div class="line number161 index160 alt2"><code class="py plain">frame1 </code><code class="py keyword">=</code> <code class="py plain">RDK.Item(</code><code class="py string">'Table 1'</code><code class="py plain">)</code></div>
+<div class="line number162 index161 alt1"><code class="py plain">frame2 </code><code class="py keyword">=</code> <code class="py plain">RDK.Item(</code><code class="py string">'Table 2'</code><code class="py plain">)</code></div>
+<div class="line number163 index162 alt2"> </div>
+<div class="line number164 index163 alt1"><code class="py keyword">while</code> <code class="py plain">idTake &gt;</code><code class="py keyword">=</code> <code class="py value">0</code><code class="py plain">:</code></div>
+<div class="line number165 index164 alt2"><code class="py comments"># ------------------------------------------------------------------</code></div>
+<div class="line number166 index165 alt1"><code class="py comments"># first priority: grab as many balls as possible</code></div>
+<div class="line number167 index166 alt2"><code class="py comments"># the tool is empty at this point, so take as many balls as possible (up to a maximum of 6 -&gt; nTCPs)</code></div>
+<div class="line number168 index167 alt1"><code class="py plain">ntake </code><code class="py keyword">=</code> <code class="py functions">min</code><code class="py plain">(nTCPs, idTake </code><code class="py keyword">+</code> <code class="py value">1</code><code class="py plain">)</code></div>
+<div class="line number169 index168 alt2"> </div>
+<div class="line number170 index169 alt1"><code class="py comments"># approach to frame 1</code></div>
+<div class="line number171 index170 alt2"><code class="py plain">robot.setPoseFrame(frame1)</code></div>
+<div class="line number172 index171 alt1"><code class="py plain">robot.setPoseTool(TCP_0)</code></div>
+<div class="line number173 index172 alt2"><code class="py plain">robot.MoveJ([</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">10</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py value">200</code><code class="py plain">])</code></div>
+<div class="line number174 index173 alt1"><code class="py plain">robot.MoveJ(target_app_frame)</code></div>
+<div class="line number175 index174 alt2"> </div>
+<div class="line number176 index175 alt1"><code class="py comments"># grab ntake balls from frame1</code></div>
+<div class="line number177 index176 alt2"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(ntake):</code></div>
+<div class="line number178 index177 alt1"><code class="py plain">TCPi </code><code class="py keyword">=</code> <code class="py plain">TCP_list[i]</code></div>
+<div class="line number179 index178 alt2"><code class="py plain">robot.setPoseTool(TCPi)</code></div>
+<div class="line number180 index179 alt1"><code class="py comments"># calculate target wrt frame1: rotation about Y is needed since Z and X axis are inverted</code></div>
+<div class="line number181 index180 alt2"><code class="py plain">target </code><code class="py keyword">=</code> <code class="py plain">transl(frame1_list[idTake])</code><code class="py keyword">*</code><code class="py plain">roty(pi)</code><code class="py keyword">*</code><code class="py plain">rotx(</code><code class="py value">30</code><code class="py keyword">*</code><code class="py plain">pi</code><code class="py keyword">/</code><code class="py value">180</code><code class="py plain">)</code></div>
+<div class="line number182 index181 alt1"><code class="py plain">target_app </code><code class="py keyword">=</code> <code class="py plain">target</code><code class="py keyword">*</code><code class="py plain">transl(</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py plain">APPROACH)</code></div>
+<div class="line number183 index182 alt2"><code class="py plain">idTake </code><code class="py keyword">=</code> <code class="py plain">idTake </code><code class="py keyword">-</code> <code class="py value">1</code></div>
+<div class="line number184 index183 alt1"><code class="py plain">robot.MoveL(target_app)</code></div>
+<div class="line number185 index184 alt2"><code class="py plain">robot.MoveL(target)</code></div>
+<div class="line number186 index185 alt1"><code class="py plain">TCP_On(TCPi, i)</code></div>
+<div class="line number187 index186 alt2"><code class="py plain">robot.MoveL(target_app)</code></div>
+<div class="line number188 index187 alt1"> </div>
+<div class="line number189 index188 alt2"><code class="py comments"># ------------------------------------------------------------------</code></div>
+<div class="line number190 index189 alt1"><code class="py comments"># second priority: unload the tool</code></div>
+<div class="line number191 index190 alt2"><code class="py comments"># approach to frame2 and place the tool balls into table2</code></div>
+<div class="line number192 index191 alt1"><code class="py plain">robot.setPoseTool(TCP_0)</code></div>
+<div class="line number193 index192 alt2"><code class="py plain">robot.MoveJ(target_app_frame)</code></div>
+<div class="line number194 index193 alt1"><code class="py plain">robot.MoveJ([</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">10</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py value">200</code><code class="py plain">])</code></div>
+<div class="line number195 index194 alt2"><code class="py plain">robot.setPoseFrame(frame2)</code></div>
+<div class="line number196 index195 alt1"><code class="py plain">robot.MoveJ(target_app_frame)</code></div>
+<div class="line number197 index196 alt2"><code class="py keyword">for</code> <code class="py plain">i </code><code class="py keyword">in</code> <code class="py functions">range</code><code class="py plain">(ntake):</code></div>
+<div class="line number198 index197 alt1"><code class="py plain">TCPi </code><code class="py keyword">=</code> <code class="py plain">TCP_list[i]</code></div>
+<div class="line number199 index198 alt2"><code class="py plain">robot.setPoseTool(TCPi)</code></div>
+<div class="line number200 index199 alt1"><code class="py keyword">if</code> <code class="py plain">idLeave &gt; nballs_frame2</code><code class="py keyword">-</code><code class="py value">1</code><code class="py plain">:</code></div>
+<div class="line number201 index200 alt2"><code class="py keyword">raise</code> <code class="py plain">Exception(</code><code class="py string">"No room left to place objects in Table 2"</code><code class="py plain">)</code></div>
+<div class="line number202 index201 alt1"> </div>
+<div class="line number203 index202 alt2"><code class="py comments"># calculate target wrt frame1: rotation of 180 about Y is needed since Z and X axis are inverted</code></div>
+<div class="line number204 index203 alt1"><code class="py plain">target </code><code class="py keyword">=</code> <code class="py plain">transl(frame2_list[idLeave])</code><code class="py keyword">*</code><code class="py plain">roty(pi)</code><code class="py keyword">*</code><code class="py plain">rotx(</code><code class="py value">30</code><code class="py keyword">*</code><code class="py plain">pi</code><code class="py keyword">/</code><code class="py value">180</code><code class="py plain">)</code></div>
+<div class="line number205 index204 alt2"><code class="py plain">target_app </code><code class="py keyword">=</code> <code class="py plain">target</code><code class="py keyword">*</code><code class="py plain">transl(</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py plain">APPROACH)</code></div>
+<div class="line number206 index205 alt1"><code class="py plain">idLeave </code><code class="py keyword">=</code> <code class="py plain">idLeave </code><code class="py keyword">+</code> <code class="py value">1</code></div>
+<div class="line number207 index206 alt2"><code class="py plain">robot.MoveL(target_app)</code></div>
+<div class="line number208 index207 alt1"><code class="py plain">robot.MoveL(target)</code></div>
+<div class="line number209 index208 alt2"><code class="py plain">TCP_Off(TCPi, i, frame2)</code></div>
+<div class="line number210 index209 alt1"><code class="py plain">robot.MoveL(target_app)</code></div>
+<div class="line number211 index210 alt2"> </div>
+<div class="line number212 index211 alt1"><code class="py plain">robot.MoveJ(target_app_frame)</code></div>
+<div class="line number213 index212 alt2"> </div>
+<div class="line number214 index213 alt1"><code class="py comments"># Move home when the robot finishes</code></div>
+<div class="line number215 index214 alt2"><code class="py plain">robot.MoveJ([</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">0</code><code class="py plain">,</code><code class="py value">10</code><code class="py plain">,</code><code class="py keyword">-</code><code class="py value">200</code><code class="py plain">])</code></div>
+<p></p>
+<h2>W14</h2>
+<p>取分項目1，參考</p>
+<p><a href="https://40623144.github.io/cd2021/content/week14.html">Week14</a></p>
+<p>def stu2b(account):<br/> return account<br/>teamb = []<br/>   <br/>with open("stage3_2b.txt") as fh:     #讀取stage3_2b的檔案<br/>    data = fh.readlines()<br/>    data = [a.replace('40823231','40823231-2') for a in data]      #將40823231換成40823231-2<br/>    data = [a.replace('407','s407') for a in data]     #將有407的學號換成s407<br/>  <br/>for i in range(len(data)):     #數據中會有\n跟\t，將\n跟\t去除<br/>    group = data[i].rstrip("\n").split("\t")<br/>    teamb.append(group)<br/>       <br/>output = ""    <br/>seperator = "-"*10 + "&lt;/br&gt;"     #分隔號製作<br/>   <br/>for i in teamb[0:]:    #小組 組長 其他六個組員<br/>    team = i[0]<br/>    leader = stu2b(i[1])<br/>    m1 = stu2b(i[3])<br/>    m2 = stu2b(i[5])<br/>    m3 = stu2b(i[7])<br/>    m4 = stu2b(i[9])<br/>    m5 = stu2b(i[11])<br/>    m6 = stu2b(i[13])<br/>  <br/>           <br/>    leaderrepo = "&lt;a href='http://github.com/" + leader + "/cd2021'&gt;" + leader + " repo&lt;/a&gt;"    #組長以及組員的倉儲和網站<br/>    leadersite = "&lt;a href='http://" + leader + ".github.io/cd2021'&gt;" + leader +  " site&lt;/a&gt;"<br/>    m1repo = "&lt;a href='http://github.com/" + m1 + "/cd2021'&gt;" + m1 + " repo&lt;/a&gt;"<br/>    m1site = "&lt;a href='http://" + m1 + ".github.io/cd2021'&gt;" + m1 +  " site&lt;/a&gt;"<br/>    m2repo = "&lt;a href='http://github.com/" + m2 + "/cd2021'&gt;" + m2 + " repo&lt;/a&gt;"<br/>    m2site = "&lt;a href='http://" + m2 + ".github.io/cd2021'&gt;" + m2 +  " site&lt;/a&gt;"<br/>    m3repo = "&lt;a href='http://github.com/" + m3 + "/cd2021'&gt;" + m3 + " repo&lt;/a&gt;"<br/>    m3site = "&lt;a href='http://" + m3 + ".github.io/cd2021'&gt;" + m3 +  " site&lt;/a&gt;"<br/>    m4repo = "&lt;a href='http://github.com/" + m4 + "/cd2021'&gt;" + m4 + " repo&lt;/a&gt;"<br/>    m4site = "&lt;a href='http://" + m4 + ".github.io/cd2021'&gt;" + m4 +  " site&lt;/a&gt;"<br/>    m5repo = "&lt;a href='http://github.com/" + m5 + "/cd2021'&gt;" + m5 + " repo&lt;/a&gt;"<br/>    m5site = "&lt;a href='http://" + m5 + ".github.io/cd2021'&gt;" + m5 +  " site&lt;/a&gt;"<br/>    m6repo = "&lt;a href='http://github.com/" + m6 + "/cd2021'&gt;" + m6 + " repo&lt;/a&gt;"<br/>    m6site = "&lt;a href='http://" + m6 + ".github.io/cd2021'&gt;" + m6 +  " site&lt;/a&gt;"<br/>    <br/>   <br/>    teamrepo = "&lt;a href='http://github.com/" + leader + "/" + team + "'&gt;" + team + " repo&lt;/a&gt;"     #小組的倉儲含網站<br/>    teamsite =  "&lt;a href='http://" + m1 + ".github.io/" + team + "'&gt;" + team +  " site&lt;/a&gt;"<br/>   <br/>    output += teamrepo + " | " + teamsite + " | " +leaderrepo + " | " + leadersite + " | " +m1repo + " | " + m1site + " | " +m2repo + " | " + m2site + " | " +m3repo + " | " + m3site + " | " +m4repo + " | " + m4site + " | " +m5repo + " | " + m5site + " | " +m6repo + " | " + m6site <br/>       <br/>            <br/>    try:<br/>        m7 = stu2b(i[15])     #第七個組員<br/>    except:<br/>        m7 = ""<br/>    try:<br/>        m8 = stu2b(i[17])     #第八個組員<br/>    except:<br/>        m8 = ""<br/>          <br/>    if m7 != "":<br/>       m7repo = "&lt;a href='http://github.com/" + m7 + "/cd2021'&gt;" + m7 + " repo&lt;/a&gt;"     #如果有第七個組員會再加倉儲和網站沒有的話就空白<br/>       m7site = "&lt;a href='http://" + m7 + ".github.io/cd2021'&gt;" + m7 +  " site&lt;/a&gt;" <br/>       output += " |  " + m7repo + "| " + m7site<br/>    else:<br/>        output += "" <br/>       <br/>    if m8 != "":<br/>       m8repo = "&lt;a href='http://github.com/" + m8 + "/cd2021'&gt;" + m8 + " repo&lt;/a&gt;"     #如果有第八個組員會再加倉儲和網站最後再加分隔線<br/>       m8site = "&lt;a href='http://" + m8 + ".github.io/cd2021'&gt;" + m8 +  " site&lt;/a&gt;" <br/>       output += " |  " + m8repo + "| " + m8site + "&lt;br /&gt;" + seperator<br/>    else:<br/>        output += "&lt;br /&gt;" + seperator<br/>   <br/>   <br/>print(output)     #輸出</p>
 <h2>W15</h2>
 <p>W15取分項目1由我負責，證據於<a href="https://youtu.be/WbbXqoTKe8I">6/4號小組討論</a>中的meet文字討論欄中</p>
 <p>影片1</p>
@@ -269,7 +492,8 @@
 <p>從我們早期的工作中我們確定<br/>這種特殊的關系； X平方加</p>
 <p>Y 平方等於這個特定的覆數<br/>表達。所以我可以用和代替它</p>
 <p>做一些簡化，我最終得到這個<br/>Q1 的表達式稍微簡單一些。和</p>
-<p>這是我得到的相同表達<br/>上一節中的幾何方法。</p><h1>倉庫</h1>
+<p>這是我得到的相同表達<br/>上一節中的幾何方法。</p>
+<h1>倉庫</h1>
 <p>原始網站刪除的東西還有部分筆記在此</p>
 <p><span>備註:記得前往github自己的帳戶中 seeting/gitgub page裡面將 Branch修改為 master</span></p>
 <p>此內容管理系統以 <a href="https://github.com/mdecourse/cmsimde">https://github.com/mdecourse/cmsimde</a> 作為 submodule 運作, 可以選定對應的版本運作, cmsimde 可以持續改版, 不會影響之前設為 submodule, 使用舊版 cmsimde 模組的內容管理相關運作.</p>
